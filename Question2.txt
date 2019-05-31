@@ -1,0 +1,47 @@
+%Jamie Ping
+%27563132
+clear all;
+close all;
+clc;
+
+%a by b plot parameters
+a=2
+b=2
+
+%all zeroes except for 2 elements
+row_vector1=zeros(1,10)
+row_vector1(4:5)=1
+y=row_vector1(1:10)
+
+%first n elements =0 remaining=1
+%let n=3
+n=3
+row_vector2=ones(1,10)
+row_vector2(1:n)=0
+x=row_vector2(1:10)
+
+
+%left pane from x=-5-+4
+
+subplot(a,b,1)
+Y=linspace(-5,5,10)
+stem(Y,y)
+axis([-5 4 0 1])
+
+
+subplot(a,b,3)
+stem(Y,x)
+axis([-5 4 0 1])
+
+
+
+%right pane from x=0-9
+
+subplot(a,b,2)
+X=linspace(0,9,10)
+stem(X,y)
+axis([0 10 0 1])
+
+subplot(a,b,4)
+stem(X,x)
+axis([0 10 0 1])

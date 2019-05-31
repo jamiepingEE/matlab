@@ -1,0 +1,29 @@
+%Jamie Ping
+%27563132
+clear all;
+close all;
+clc;
+
+radius=[1:10]
+volume_of_sphere=(4/3)*pi*radius.^3
+surface_area_of_sphere=4*pi*radius.^2
+
+subplot(1,2,1)
+plot(radius,volume_of_sphere,'g')
+hold(subplot(1,2,1))
+plot(radius,surface_area_of_sphere,'b')
+xlabel('r')
+ylabel('vol/surf')
+title('r vs. vol/surf sphere')
+
+length_of_side=[1:10]
+volume_of_cube=length_of_side.^3
+surface_area_of_cube=6*length_of_side.^2
+
+subplot(1,2,2)
+plot(length_of_side,volume_of_cube,'r')
+hold(subplot(1,2,2))
+plot(length_of_side,surface_area_of_cube,'g')
+xlabel('l')
+ylabel('vol/surf')
+title('length vs. vol/surf cube')
