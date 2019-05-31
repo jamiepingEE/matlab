@@ -1,0 +1,34 @@
+Question 1 part a)
+
+%Jamie Ping
+%7563132
+clear all;
+close all;
+clc;
+ 
+p = input('num of periods?');%goes in w
+s = input('step size?');%goes in w
+global w;%the only w, callable throughout all scripts in workspace
+w = -p*pi:s:p*pi;%frequency interval for FT
+
+for loop = 1:5;%5 times
+    %"The program is to ask the user to input[...]This is to be repeated 5 times."
+    r = input('samp rate');%get number of samples per period
+    N = floor(r*2);%2N integer x nyquist
+    n = 0:1:2*N-1;% # samples for two periods
+    x = sin(2*pi/N*n);%compute x[n]
+    
+    figure(loop),subplot(2,1,1)%plot signal
+    stem(n,x);
+    title('input: x[n] in time domain');
+    xlabel('n');
+    ylabel('x[n]');
+    
+    y = FT(x,n,w);%ft of x[k] arrays passed from within function 'fourier'
+    
+    figure(loop),subplot(2,1,2)
+    plot(w,abs(y));%plot transform(magnitude) against freqency
+    title('output: x[n] in freq domain, X(w)');
+    xlabel('w');
+    ylabel('X(w)');
+end
