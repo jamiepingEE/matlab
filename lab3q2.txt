@@ -1,0 +1,39 @@
+%lab3q2
+clear
+clc
+
+n=-10:10;
+x=zeros(1,21)
+x(9:13)=1;
+
+%question2 0 to 2*pi
+%step=2*pi/(length(n)-1)
+%w=0:step:2*pi
+w=linspace(0,2*pi,21)
+
+
+for a=1:length(w)%every value of w from 1 to some length
+    
+    sum = 0 ;
+    for b = 1:length(n)%for every element of n
+        sum = sum + x(b) * exp( -i*w(a)*b )%neg j omega a from x[a] b from X[b]
+    end
+    sum1(a)=sum;
+end
+
+subplot(2,2,1)
+stem(n,x)
+title('input')
+
+subplot(2,2,2)
+plot(w,abs(sum1))%absolute value of sum1
+title('DTFT using loop')
+
+subplot(2,2,3)
+x_fft=fft(x)%x1 is vector of size 1x21, step size s for w is -10:10
+plot(w,abs(x_fft))%abs to obtain magnitude of complex number
+title('DTFT from fft command (0<w<pi)')
+
+subplot(2,2,4)
+stem(n,ifft(x_fft))%using DTFT as input
+title('Inverse DTFT from ifft command')
