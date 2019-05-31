@@ -1,0 +1,318 @@
+
+%prelabq1
+
+[y,fs]=audioread('lab_5_Audio_1.wav');
+%sound(y,fs);%a) Original file
+%sound(0.25*y,fs);%b)i. faint
+%sound(4*y,fs);%b)ii. very loud and high static
+%sound(y, fs/2);%c)ii. very slow
+%sound(y, fs*2);%c)ii. sped up
+
+%Question2 d)
+%export butterworth parameters for order 26
+
+g=prod(G); %product of array elements of G
+[b,a]=sos2tf(SOS,g);%convert digital 2nd order data to transfer function
+
+A=round(a);
+B=round(b);
+
+subplot(2,1,1);
+zplane(b,a);
+title('z-plot of cheby filter without rounding');
+subplot(2,1,2);
+zplane(B,A);
+title('z-plot of cheby filter with rounding');
+
+%prelabq2dex
+clear
+x = 0.1 + 0.1 + 0.1
+if ( x == 0.3)
+disp(' x is equal to 0.3')
+else
+disp('x is is NOT equal to 0.3')
+end
+% use the fprintf output command to display the value of x to % 18 decimal place in a field-width of 21 columns
+fprintf(' x is really = %21.18f\n', x)
+
+
+%Problem 1a input
+clear all;
+close all;
+clc;
+
+%IIR butterworth
+%plot Nth=4th magnitude, dft
+%plot Nth=8th magnitude, dft
+
+Fs = 6000%pick fmax
+t = [0:1/Fs:1];%interval between [0 1]
+x = sin(100*t) + sin(2000*t) + sin(6000*t);%function
+Wn = [300 340]/3000;%interval for butter filter
+w = [-0.5:1/6000:0.5]; %interval same size as [0 1]
+
+%according to command, assign
+%numerator B and denominator A B/A
+[B1,A1] = butter(2,Wn,'bandpass')%(2N, interval) 4th order butterworth built-in filter
+y1 = filter(B1,A1,x);% Output of the 4th order butterworth filter, y1, using vector x
+
+%second set of coefficients B and A
+[B2,A2] = butter(4,Wn,'bandpass') %(2N, interval) 8th order filter
+y2 = filter(B2,A2,x);   % Output of the 4th order butterworth filter
+
+%freqz using coeff from butter
+[h1,w1] = freqz(B1,A1);   % Magnitude of 4th order butter
+[h2,w2] = freqz(B2,A2);   % Magnitude of 8th order butter
+
+figure(1)
+%plot of input signal
+subplot(7,1,1)
+plot(t,x)
+title('Input sin(100*t) + sin(2000*t) + sin(6000*t)')
+
+subplot(7,1,2)
+plot(w1,abs(h1))
+title('Magnitude response from 4th Order Butterworth')
+
+subplot(7,1,3)
+plot(w2,abs(h2))
+title('Magnitude response from 8th Order Butterworth')
+
+subplot(7,1,4)
+plot(t(1:200),y1(1:200))%plot filter output first 200 samples
+title('Output signal from 4th Order Butterworth')
+
+subplot(7,1,5)
+plot(t(1:200),y2(1:200))
+title('Output signal from 8th Order Butterworth')
+
+subplot(7,1,6)
+plot(w,fftshift(abs(fft(y2))))%plot of DFT of output of 8th order
+title('DFT of 8th order signal in frequency domain')
+
+subplot(7,1,7)
+plot(w,fftshift(abs(fft(x))))%plot of DFT of output of 8th order
+title('DFT of 8th order signal in frequency domain ')
+
+%Problem 1b input
+clear all;
+close all;
+clc;
+
+%IIR cheby1
+%plot Nth=4th magnitude, dft
+%plot Nth=8th magnitude, dft
+%Rp=1dB
+
+Fs = 6000%pick fmax
+t = [0:1/Fs:1];%interval between [0 1]
+x = sin(100*t) + sin(2000*t) + sin(6000*t);%function
+Wn = [300 340]/3000;%interval for cheby1 filter
+w = [-0.5:1/6000:0.5]; %frequency interval same length as [0 1]
+
+%according to command, assign
+%numerator B and denominator A B/A
+[B1,A1] = cheby1(2,1,Wn,'bandpass')%(2N, interval) 4th order cheby1 built-in filter
+y1 = filter(B1,A1,x);% Output of the 4th order cheby1 filter,y, using vector x
+
+%second set of coefficients B and A
+[B2,A2] = cheby1(4,1,Wn,'bandpass') %(2N, interval) 8th order filter
+y2 = filter(B2,A2,x);   % Output of the 4th order cheby1 filter
+
+%freqz using coeff from cheby1
+[h1,w1] = freqz(B1,A1);   % Magnitude of 4th order cheby1
+[h2,w2] = freqz(B2,A2);   % Magnitude of 8th order cheby1
+
+figure(1)
+
+%plot of input
+subplot(8,1,1)
+plot(t,x)
+title('Input sin(100*t) + sin(2000*t) + sin(6000*t)')
+
+%closeup of input
+subplot(8,1,2)
+plot(t(1:200),x(1:200))
+title('First 200 samples of input to illustrate signal pattern at smaller scale')
+
+subplot(8,1,3)
+plot(w1,abs(h1))
+title('Magnitude response from 4th Order cheby1')
+
+subplot(8,1,4)
+plot(w2,abs(h2))
+title('Magnitude response from 8th Order cheby1')
+
+subplot(8,1,5)
+plot(t(1:200),y1(1:200))%plot filter output first 200 samples
+title('Output signal from 4th Order cheby1')
+
+subplot(8,1,6)
+plot(t(1:200),y2(1:200))
+title('Output signal from 8th Order cheby1')
+
+subplot(8,1,7)
+plot(w,fftshift(abs(fft(x))))%mirror and center plot of DFT
+title('DFT of input signal in frequency domain')
+
+subplot(8,1,8)
+plot(w,fftshift(abs(fft(y2))))%plot of DFT of output of 8th order
+title('DFT of 8th order signal in frequency domain')
+
+
+%Problem 1c input
+clear all;
+close all;
+clc;
+
+%IIR ellip
+%plot Nth=4th magnitude, dft
+%plot Nth=8th magnitude, dft
+%Rp=1dB
+
+Fs = 6000%pick fmax
+t = [0:1/Fs:1];%interval between [0 1]
+x = sin(100*t) + sin(2000*t) + sin(6000*t);%function
+Wn = [300 340]/3000;%interval for ellip filter
+w = [-0.5:1/6000:0.5]; %frequency interval same length as [0 1]
+
+%according to command, assign
+%numerator B and denominator A B/A
+[B1,A1] = ellip(2,1,60,Wn,'bandpass')%(2N, interval) 4th order ellip built-in filter
+y1 = filter(B1,A1,x);% Output of the 4th order ellip filter,y, using vector x
+
+%second set of coefficients B and A
+[B2,A2] = ellip(4,1,60,Wn,'bandpass') %(2N, interval) 8th order filter
+y2 = filter(B2,A2,x);   % Output of the 4th order ellip filter
+
+%freqz using coeff from ellip
+[h1,w1] = freqz(B1,A1);   % Magnitude of 4th order ellip
+[h2,w2] = freqz(B2,A2);   % Magnitude of 8th order ellip
+
+figure(1)
+
+%plot of input
+subplot(8,1,1)
+plot(t,x)
+title('Input sin(100*t) + sin(2000*t) + sin(6000*t)')
+
+%closeup of input
+subplot(8,1,2)
+plot(t(1:200),x(1:200))
+title('First 200 samples of input to illustrate signal pattern at smaller scale')
+
+subplot(8,1,3)
+plot(w1,abs(h1))
+title('Magnitude response from 4th Order ellip')
+
+subplot(8,1,4)
+plot(w2,abs(h2))
+title('Magnitude response from 8th Order ellip')
+
+subplot(8,1,5)
+plot(t(1:200),y1(1:200))%plot filter output first 200 samples
+title('Output signal from 4th Order ellip')
+
+subplot(8,1,6)
+plot(t(1:200),y2(1:200))
+title('Output signal from 8th Order ellip')
+
+subplot(8,1,7)
+plot(w,fftshift(abs(fft(x))))%mirror and center plot of DFT
+title('DFT of input signal in frequency domain')
+
+subplot(8,1,8)
+plot(w,fftshift(abs(fft(y2))))%plot of DFT of output of 8th order
+title('DFT of 8th order signal in frequency domain')
+
+%lab5q2b
+
+clear all
+clc
+Fs=8192;%sampling frequency
+%parameters, (frequencies in Hz)
+f1=200;
+f2=330;
+f3=480;
+
+%interval of signal
+%step size of Fs or samples per period
+t=[0:2*pi/Fs:3];
+
+%create signal, let signal be periodic so w=2*pi*f thus w/2pi is rational fraction q=a/b for each component
+
+y=sin(2*pi*f1*t).*(0<=t & t<=3)+sin(2*pi*f2*t).*(1<=t & t<=3)+sin(2*pi*f3*t).*(2<=t & t<=3);
+%signal plot
+figure(1);
+subplot(4,1,1);
+plot(t,y);
+title('signal before filtered');
+w=[-1.5:2*pi/Fs:1.5];
+subplot(4,1,2);
+
+r=abs(fftshift(fft(y)));
+plot(w,r);
+title('frequency before filtered');
+subplot(4,1,3)
+
+a = fir1(130,[(329/(Fs/2)) (331/(Fs/2))],'stop');%normalized freq[0,1]by f/nyquist
+d=filter(a,1,y);
+plot(w,d);
+title('signal after filtered')
+
+subplot(4,1,4)
+plot(w,abs(fftshift(fft(d))));
+title('frequency after filtered');
+k=ifft(d)
+
+%mag and phase of filter
+figure(2)
+freqz(a)
+
+%lab5prob3a
+t = [0:1/44099:1];
+[x,Fs] = audioread('ELEC_364_lab_5_Audio_S.wav', [1 44100]);
+
+subplot(5,1,1)
+plot(t,x)
+title('First second of audio')
+
+w  = [-0.5:1/44099:0.5];
+subplot(5,1,2)
+plot(w,abs(fftshift(fft(x))))
+title('Audio in Frequency domain')
+
+subplot(5,1,3)
+plot(audio_down_sampled)
+title('Downsample (8k)')
+
+subplot(5,1,4)
+plot(audio_down_sampled2)
+title('Downsampled (16k)')
+
+subplot(5,1,4)
+load audio_down_sampled2
+sound(mySound,Fs)
+plot(w,abs(fftshift(fft(x2))))
+title('Downsampled (16k) DFT')
+
+%lab5prob3b
+t = [0:1/44099:1];
+[x,Fs] = audioread('ELEC_364_lab_5_Audio_S.wav', [1 44100]);
+
+subplot(4,1,1)
+plot(t,x)
+title('First second of audio')
+
+w  = [-0.5:1/44099:0.5];
+subplot(4,1,2)
+plot(w,abs(fftshift(fft(x))))
+title('Audio in Frequency domain')
+
+subplot(4,1,3)
+plot(audio_up_sampled)
+title('upsample (8k)')
+
+%subplot(4,1,4)
+%plot(audio_up_sampled2)
+%title('upsampled (16k)')
