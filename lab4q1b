@@ -1,0 +1,32 @@
+Question 1 part b)
+%Jamie Ping
+%7563132
+clear all;
+close all;
+clc;
+ 
+r = input('input sampling rate (nyquist rate)')
+N = floor(r*2)%force 2N integer x nyquist rate
+ 
+for index = 1:5
+    window_size = input('num of periods(also window size)')%diff window size each time
+    n = [0:window_size*N]%simple interval no step
+    w = [-window_size*pi:0.05:window_size*pi]%fixed step size
+    
+    x = sin(2*pi/N*n)%x[n]
+    
+    %plot x[n]
+    figure(index),subplot(2,1,1)
+    stem(n,x)
+    title('input: x[n] in time domain')
+    xlabel('window size')
+    ylabel('x(n)')
+    
+    y = FT(x,n,w)%reuse of FT function and global w
+    
+    figure(index),subplot(2,1,2)
+    plot(w,abs(y))%plot transform
+    title('output: Sampled x[n] in frequency domain,X(w)')
+    xlabel('w')
+    ylabel('X(w)')
+end
