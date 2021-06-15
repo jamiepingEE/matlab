@@ -1,0 +1,5 @@
+q1: Image Histogram
+q2: Image Histogram equalization, AMBE
+q3: Cosine similarity
+q4: De-interlacing algorithm attempt of half-frame(odd array rows), PSNR
+q5: Motion detection based on frame intensity as threshold, and overall sequency similarity as threshold
