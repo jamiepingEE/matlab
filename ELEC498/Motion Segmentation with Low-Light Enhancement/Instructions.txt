@@ -1,0 +1,45 @@
+Instructions
+
+Download original .y4m converted video source from Google Drive download URL:
+https://drive.google.com/drive/folders/1GJeD6UXVtzBELtM3Wj1unhZiPPTOz3fL?usp=sharing
+
+Video description:
+v1.1 (7s-13s cut of the same video)
+v1.2 (14s-22s)
+v2.1 (2s-10s)
+v2.2 (11s-17s)
+v3
+v4
+v5
+
+Otherwise all discussed results are in folder "Final Report Results" at much smaller size; open with media player of choice
+
+This code requires memory to store the frames and scalar mean values.
+1. Run FinalBuildv1a.m MATLAB driver script on Matlab, press RUN.
+2. Change only the lines 9-10 for different video file inputs and outputs respectively.
+
+yuv4mpeg2mov.m is required to run the matlab function "yuv4mpeg2mov" and is included in project folder
+https://www.mathworks.com/matlabcentral/fileexchange/50690-yuv4mpeg-reader
+
+Other files from journals are included:
+LECARM.m
+limeEstimate.m
+CameraModel.m
++CameraModels
+All of which can be found from the original author's Github page
+https://github.com/RenYurui/LECARM
+===============================================================================================
+Linux command line conversion of any video taken by iPhone SE(1st gen), .MOV extension:
+
+If you are using Slackware, you must get ffmpeg from sbopkg, if you do not have sbopkg, get it from slackpkg
+
+1. Locate directory of videos to be converted e.g.: cd /my-videos
+2. Open command line interface or console (e.g.: roxterm, konsole, bash, xterm, rxvt)
+3. Type: ffmpeg -i my-video1.MOV -ss 00:00:02 -to 00:00:10 my-converted-video.mp4
+Note: commands are case sensitive, -ss means start and -to means end of segment that you wish to cut out
+the above cuts a video starting at 2s and ends at 10s, and outputs it as my-video-output.mp4
+extension must be specified
+4. Then type: ffmpeg -i my-converted-video.mp4 -pix_fmt yuv420p my-video-output.y4m
+Note: the above line converts to .y4m format
+5. Finally, type: sed -i '0,/C420mpeg2/s//C420/' *.y4m
+Note: the above line is a stream editor for codec formatting, omission will result in error on matlab
