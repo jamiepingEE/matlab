@@ -1,0 +1,19 @@
+Motion Segmentation with Low-light Enhancement
+
+Input: .y4m 
+Output: .avi
+
+Algorithm:
+open stream
+
+Takes in a low-light image
+Gaussian Filter
+Downsample
+Enhances with LECARM (Ren et al. IEEE. TCSVT. Vol.29#4. April 2019)
+Grayscale conversion
+XOR (background and current frame)
+binary; threshold=(mean frame pixel intensity)+(connected objects*5)
+median filter; window size nxn; n=mean frame pixel intensity
+
+write to file
+close stream
